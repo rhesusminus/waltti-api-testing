@@ -5,15 +5,18 @@ dotenv.config()
 
 const app: Express = express()
 const port = Number(process.env.PORT) || 8000
+const fetchInterval = Number(process.env.DATA_FETCH_INTERVAL) || 10000
 
 const fetchData = () => console.log('naak')
-
-const fetchInterval = 10000 // ms
 
 // Create interval to fetch data from API
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')
+})
+
+app.get('/vehicleposition', (req: Request, res: Response) => {
+  res.send('vehicleposition')
 })
 
 app.listen(port, () => {

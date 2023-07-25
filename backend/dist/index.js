@@ -8,11 +8,14 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = Number(process.env.PORT) || 8000;
+const fetchInterval = Number(process.env.DATA_FETCH_INTERVAL) || 10000;
 const fetchData = () => console.log('naak');
-const fetchInterval = 10000; // ms
 // Create interval to fetch data from API
 app.get('/', (req, res) => {
     res.send('Express + TypeScript Server');
+});
+app.get('/vehicleposition', (req, res) => {
+    res.send('vehicleposition');
 });
 app.listen(port, () => {
     console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

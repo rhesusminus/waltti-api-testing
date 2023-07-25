@@ -14,14 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLuke = exports.getVehiclePosition = void 0;
 const gtfs_realtime_bindings_1 = __importDefault(require("gtfs-realtime-bindings"));
+const constants_js_1 = require("./constants.js");
 const URL = process.env.API_URL || 'https://data.waltti.fi';
 const authHeaders = {
     Authorization: `Authorization: Basic ${process.env.CLIENT_SECRET}`
 };
 const headers = Object.assign({}, authHeaders);
-const getVehiclePosition = (city) => __awaiter(void 0, void 0, void 0, function* () {
+const getVehiclePosition = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield fetch(`${URL}/${city}/api/gtfsrealtime/v1.0/feed/vehicleposition`, {
+        const response = yield fetch(`${URL}/${constants_js_1.CITIES.OULU}/api/gtfsrealtime/v1.0/feed/vehicleposition`, {
             method: 'GET',
             headers
         });

@@ -1,6 +1,5 @@
-import fetch from 'node-fetch'
 import GtfsRealtimeBindings from 'gtfs-realtime-bindings'
-import { CITIES } from './constants'
+import { City } from './types'
 
 const URL = process.env.API_URL || 'https://data.waltti.fi'
 
@@ -12,10 +11,10 @@ const headers = {
   ...authHeaders
 }
 
-const getVehiclePosition = async () => {
+const getVehiclePosition = async (city: City) => {
   try {
     const response = await fetch(
-      `${URL}/${CITIES.OULU}/api/gtfsrealtime/v1.0/feed/vehicleposition`,
+      `${URL}/${city}/api/gtfsrealtime/v1.0/feed/vehicleposition`,
       {
         method: 'GET',
         headers
@@ -44,4 +43,14 @@ const getVehiclePosition = async () => {
   }
 }
 
-export { getVehiclePosition }
+const getLuke = async () => {
+  try {
+    const result = await fetch('https://swapi.dev/api/people/1')
+    const data = await result.json()
+    console.log(data)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export { getVehiclePosition, getLuke }
