@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addItem = void 0;
-let db = [];
+const db = [];
+let vehicleposition;
 const addItem = (item) => db.push(item);
-exports.addItem = addItem;
+const setVehiclePosition = (position) => (vehicleposition = position);
+exports.default = { vehicleposition, setVehiclePosition };

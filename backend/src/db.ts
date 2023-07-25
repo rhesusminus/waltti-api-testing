@@ -1,3 +1,8 @@
-let db = []
+const db = []
+let vehicleposition: unknown
 
-export const addItem = (item: unknown) => db.push(item)
+const addItem = (item: unknown) => db.push(item)
+
+const setVehiclePosition = (position: unknown) => (vehicleposition = position)
+
+export default { vehicleposition, setVehiclePosition }

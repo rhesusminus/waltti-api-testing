@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getLuke = exports.getVehiclePosition = void 0;
 const gtfs_realtime_bindings_1 = __importDefault(require("gtfs-realtime-bindings"));
+const db_1 = __importDefault(require("./db"));
 const URL = process.env.API_URL || 'https://data.waltti.fi';
 const authHeaders = {
     Authorization: `Authorization: Basic ${process.env.CLIENT_SECRET}`
@@ -30,6 +31,8 @@ const getVehiclePosition = (city) => __awaiter(void 0, void 0, void 0, function*
         }
         const buffer = yield response.arrayBuffer();
         const feed = gtfs_realtime_bindings_1.default.transit_realtime.FeedMessage.decode(new Uint8Array(buffer));
+        console.log(feed);
+        db_1.default.setVehiclePosition(feed);
         feed.entity.forEach((entity) => {
             if (entity.tripUpdate) {
                 console.log(entity.tripUpdate);

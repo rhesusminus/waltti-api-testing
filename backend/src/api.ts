@@ -1,5 +1,6 @@
 import GtfsRealtimeBindings from 'gtfs-realtime-bindings'
 import { City } from './types'
+import db from './db'
 
 const URL = process.env.API_URL || 'https://data.waltti.fi'
 
@@ -31,6 +32,10 @@ const getVehiclePosition = async (city: City) => {
     const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(
       new Uint8Array(buffer)
     )
+
+    console.log(feed)
+
+    db.setVehiclePosition(feed)
 
     feed.entity.forEach((entity) => {
       if (entity.tripUpdate) {
