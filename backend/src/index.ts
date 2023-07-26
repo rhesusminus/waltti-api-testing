@@ -9,10 +9,8 @@ const app: Express = express()
 const port = Number(process.env.PORT) || 8000
 const fetchInterval = Number(process.env.DATA_FETCH_INTERVAL) || 10000
 
-const fetchData = () => console.log('naak')
-
 // Create interval to fetch data from Waltti API
-setInterval(() => console.log('fetch data'), fetchInterval)
+// setInterval(() => console.log('fetch data'), fetchInterval)
 
 getVehiclePosition('oulu')
 

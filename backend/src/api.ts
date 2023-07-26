@@ -2,21 +2,29 @@ import GtfsRealtimeBindings from 'gtfs-realtime-bindings'
 import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import { City } from './types'
+import { base64encode } from './utils'
 import db from './db'
-import { log } from 'console'
 
 dotenv.config()
 
+const { WALTTI_CLIENT_ID, WALTTI_CLIENT_SECRET } = process.env
+
 const URL = process.env.API_URL || 'https://data.waltti.fi'
 
-const secretSauce = Buffer.from(
-  `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
-).toString('base64')
+const createSecretSauce = (id?: string, secret?: string) => {
+  if (!id || !secret) {
+    console.log('WALTTI_CLIENT_ID or WALTTI_CLIENT_SECRET missing')
+    return
+  }
 
-log(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)
+  return base64encode(`${id}:${secret}`)
+}
 
 const authHeaders = {
-  Authorization: `Basic ${secretSauce}`
+  Authorization: `Basic ${createSecretSauce(
+    WALTTI_CLIENT_ID,
+    WALTTI_CLIENT_SECRET
+  )}`
 }
 
 const headers = {
@@ -44,14 +52,10 @@ const getVehiclePosition = async (city: City) => {
       new Uint8Array(buffer)
     )
 
-    console.log('feed', feed)
-
     db.setVehiclePosition(feed)
 
-    feed.entity.forEach((entity) => {
-      if (entity.tripUpdate) {
-        console.log(entity.tripUpdate)
-      }
+    feed.entity.forEach((element) => {
+      console.log(element)
     })
   } catch (error) {
     console.log(error)
