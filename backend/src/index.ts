@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import db from './db'
+import { getVehiclePosition } from './api'
 
 dotenv.config()
 
@@ -10,8 +11,10 @@ const fetchInterval = Number(process.env.DATA_FETCH_INTERVAL) || 10000
 
 const fetchData = () => console.log('naak')
 
-// Create interval to fetch data from API
+// Create interval to fetch data from Waltti API
 setInterval(() => console.log('fetch data'), fetchInterval)
+
+getVehiclePosition('oulu')
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server')

@@ -1,11 +1,22 @@
 import GtfsRealtimeBindings from 'gtfs-realtime-bindings'
+import dotenv from 'dotenv'
+import fetch from 'node-fetch'
 import { City } from './types'
 import db from './db'
+import { log } from 'console'
+
+dotenv.config()
 
 const URL = process.env.API_URL || 'https://data.waltti.fi'
 
+const secretSauce = Buffer.from(
+  `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+).toString('base64')
+
+log(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`)
+
 const authHeaders = {
-  Authorization: `Authorization: Basic ${process.env.CLIENT_SECRET}`
+  Authorization: `Basic ${secretSauce}`
 }
 
 const headers = {
@@ -33,7 +44,7 @@ const getVehiclePosition = async (city: City) => {
       new Uint8Array(buffer)
     )
 
-    console.log(feed)
+    console.log('feed', feed)
 
     db.setVehiclePosition(feed)
 
