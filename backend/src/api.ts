@@ -1,15 +1,14 @@
-import GtfsRealtimeBindings from 'gtfs-realtime-bindings'
 import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 import { City } from './types'
-import { base64encode } from './utils'
+import { base64encode, decodeFeedMessage } from './utils'
 import db from './db'
 
 dotenv.config()
 
-const { WALTTI_CLIENT_ID, WALTTI_CLIENT_SECRET } = process.env
+const { WALTTI_CLIENT_ID, WALTTI_CLIENT_SECRET, API_URL } = process.env
 
-const URL = process.env.API_URL || 'https://data.waltti.fi'
+const URL = API_URL ?? 'https://data.waltti.fi'
 
 const createSecretSauce = (id?: string, secret?: string) => {
   if (!id || !secret) {
@@ -35,10 +34,7 @@ const getVehiclePosition = async (city: City) => {
   try {
     const response = await fetch(
       `${URL}/${city}/api/gtfsrealtime/v1.0/feed/vehicleposition`,
-      {
-        method: 'GET',
-        headers
-      }
+      { headers }
     )
 
     if (!response.ok) {
@@ -48,9 +44,7 @@ const getVehiclePosition = async (city: City) => {
     }
 
     const buffer = await response.arrayBuffer()
-    const feed = GtfsRealtimeBindings.transit_realtime.FeedMessage.decode(
-      new Uint8Array(buffer)
-    )
+    const feed = decodeFeedMessage(buffer)
 
     db.setVehiclePosition(feed)
 
